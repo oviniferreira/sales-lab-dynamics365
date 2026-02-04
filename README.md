@@ -29,23 +29,31 @@ Campos principais:
 - Email
 - Telefone
 
+![Tabela Cliente](images/cliente.png)
+
+
 ### Tabela Produto
-Responsável por armazenar os produtos disponíveis para venda.
+Armazena os produtos disponíveis para venda.
 
 Campos principais:
 - Nome do Produto
 - Preço
-- Ativo
+- Status
+
+![Tabela Produto](images/produto%20(1).png)
+
 
 ### Tabela Pedido
-Representa uma venda realizada no sistema.
+Representa os pedidos realizados pelos clientes.
 
 Campos principais:
-- Cliente (Lookup)
-- Produto (Lookup)
-- Quantidade
-- Valor Total
+- Cliente
 - Data do Pedido
+- Valor Total
+- Status
+
+![Tabela Pedido](images/pedido.png)
+
 
 ---
 
