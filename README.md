@@ -1,108 +1,42 @@
-# Sales Lab – Dynamics 365 CRM
+## ⚙️ Business Rules
 
-Projeto de CRM de vendas desenvolvido no Microsoft Dynamics 365, utilizando Dataverse e Model-Driven App.
-O objetivo do projeto é simular um cenário real de gestão de clientes, produtos e pedidos, aplicando boas práticas
-de modelagem de dados e estruturação de aplicações no Dynamics 365.
+Foram implementadas regras de negócio para validação e controle dos dados diretamente no formulário.
 
 ---
 
-## 🎯 Objetivo do Projeto
+### ✔️ Regra 1 – Validação da Quantidade do Pedido
 
-Criar um sistema de CRM funcional para controle de vendas, permitindo:
-- Cadastro de clientes
-- Cadastro de produtos
-- Criação e gerenciamento de pedidos
-- Relacionamento entre dados de forma estruturada
+Garante que a quantidade informada seja maior que zero.
 
-Este projeto está sendo desenvolvido com foco em aprendizado prático e construção de portfólio
-para vagas de estágio e nível júnior em Dynamics 365.
+Se a quantidade for menor ou igual a zero:
+- O sistema exibe mensagem de erro
+- O salvamento do registro é impedido
 
----
+📷 Estrutura da regra:
 
-## 🧱 Modelagem de Dados (Dataverse)
+![BR Quantidade Designer](images/business-rules/BR-validar-quantidade-designer.png)
 
-### Tabela Cliente
-Responsável por armazenar as informações dos clientes.
+📷 Funcionamento no formulário:
 
-Campos principais:
-- Nome
-- Email
-- Telefone
-
-![Tabela Cliente](images/cliente.png)
-
-
-### Tabela Produto
-Armazena os produtos disponíveis para venda.
-
-Campos principais:
-- Nome do Produto
-- Preço
-- Status
-
-![Tabela Produto](images/produto%20(1).png)
-
-
-### Tabela Pedido
-Representa os pedidos realizados pelos clientes.
-
-Campos principais:
-- Cliente
-- Data do Pedido
-- Valor Total
-- Status
-
-![Tabela Pedido](images/pedido.png)
-
+![BR Quantidade Erro](images/business-rules/BR-validar-quantidade-erro-form.png)
 
 ---
 
-## 🔗 Relacionamentos
+### ✔️ Regra 2 – Bloqueio de Campos ao Confirmar Pedido
 
-- **Cliente (1:N) Pedido**  
-  Um cliente pode possuir vários pedidos.
+Quando o status do pedido é alterado para **Confirmado**:
 
-- **Produto (1:N) Pedido**  
-  Um produto pode estar associado a vários pedidos.
+- Cliente, Produto e Quantidade são bloqueados
+- Caso o pedido volte para Rascunho, os campos são liberados novamente
 
----
+📷 Estrutura da regra:
 
-## 🧩 Model-Driven App
+![BR Bloqueio Designer](images/business-rules/BR-bloquear-campos-confirmado-designer.png)
 
-Foi criado um Model-Driven App baseado nas tabelas do Dataverse, permitindo
-a navegação e o gerenciamento dos dados de forma padrão do Dynamics 365.
+📷 Funcionamento com Pedido Confirmado:
 
-Funcionalidades disponíveis:
-- Cadastro e edição de Clientes
-- Cadastro e edição de Produtos
-- Criação e acompanhamento de Pedidos
+![BR Campos Bloqueados](images/business-rules/BR-bloquear-campos-confirmado-form.png)
 
----
+📷 Funcionamento com Pedido em Rascunho:
 
-## ⚙️ Tecnologias Utilizadas
-
-- Microsoft Dynamics 365
-- Power Apps
-- Dataverse
-- Model-Driven App
-
----
-
-## 📌 Status do Projeto
-
-✔️ Modelagem de dados concluída  
-✔️ Relacionamentos configurados  
-✔️ Model-Driven App funcional  
-
-🔄 Próximos passos:
-- Criação de Business Rules
-- Implementação de JavaScript
-- Desenvolvimento de Plugin
-- Automações com Power Automate
-
----
-
-## 👤 Autor
-
-Projeto desenvolvido por **Vinicius Ferreira** com foco em aprendizado prático
-e desenvolvimento profissional na área de Dynamics 365.
+![BR Campos Liberados](images/business-rules/BR-bloquear-campos-rascunho-form.png)
