@@ -1,0 +1,98 @@
+var SalesLab = SalesLab || {};
+SalesLab.Pedido = (function () {
+  "use strict";
+
+  var FIELDS = {
+    produto: "dev_produto",        // lookup Produto no Pedido
+    quantidade: "dev_quantidade",  // Quantidade no Pedido
+    total: "dev_valortotal",       // Valor Total no Pedido
+    status: "dev_statusdopedido"   // Status do Pedido
+  };
+
+  var PRODUTO_TABLE = "dev_produto";     // nome lógico da tabela Produto
+  var PRODUTO_PRECO_FIELD = "dev_preco"; // nome lógico do campo Preço (Produto)
+
+  var STATUS_CONFIRMADO = 100000001; // valor numérico do "Confirmado"
+
+  function getFormContext(executionContext) {
+    return executionContext.getFormContext();
+  }
+
+  function toInt(value) {
+    var n = parseInt(value, 10);
+    return isNaN(n) ? 0 : n;
+  }
+
+  function toNumber(value) {
+    var n = Number(value);
+    return isNaN(n) ? 0 : n;
+  }
+
+  async function calcularTotal(executionContext) {
+    var formContext = getFormContext(executionContext);
+
+    var produtoAttr = formContext.getAttribute(FIELDS.produto);
+    var qtdAttr = formContext.getAttribute(FIELDS.quantidade);
+    var totalAttr = formContext.getAttribute(FIELDS.total);
+
+    if (!produtoAttr || !qtdAttr || !totalAttr) return;
+
+    var produtoValue = produtoAttr.getValue(); // lookup
+    var qtd = toInt(qtdAttr.getValue());
+
+    // Se não tiver produto ou qtd inválida: limpa o total
+    if (!produtoValue || produtoValue.length === 0 || qtd <= 0) {
+      totalAttr.setValue(null);
+      totalAttr.setSubmitMode("always");
+      return;
+    }
+
+    try {
+      var produtoId = produtoValue[0].id.replace("{", "").replace("}", "");
+
+      // Busca o preço do Produto via Web API
+      var result = await Xrm.WebApi.retrieveRecord(
+        PRODUTO_TABLE,
+        produtoId,
+        "?$select=" + PRODUTO_PRECO_FIELD
+      );
+
+      var preco = toNumber(result[PRODUTO_PRECO_FIELD]);
+      var total = preco * qtd;
+
+      totalAttr.setValue(total);
+      totalAttr.setSubmitMode("always");
+    } catch (e) {
+      Xrm.Navigation.openAlertDialog({
+        text: "Erro ao buscar preço do Produto.\n" + (e.message || e)
+      });
+    }
+  }
+
+  function bloquearCamposSeConfirmado(executionContext) {
+    var formContext = getFormContext(executionContext);
+
+    var statusAttr = formContext.getAttribute(FIELDS.status);
+    if (!statusAttr) return;
+
+    var confirmado = (statusAttr.getValue() === STATUS_CONFIRMADO);
+
+    var ctrlProduto = formContext.getControl(FIELDS.produto);
+    var ctrlQtd = formContext.getControl(FIELDS.quantidade);
+    var ctrlTotal = formContext.getControl(FIELDS.total);
+
+    if (ctrlProduto) ctrlProduto.setDisabled(confirmado);
+    if (ctrlQtd) ctrlQtd.setDisabled(confirmado);
+    if (ctrlTotal) ctrlTotal.setDisabled(confirmado);
+  }
+
+  function onLoad(executionContext) {
+    bloquearCamposSeConfirmado(executionContext);
+  }
+
+  return {
+    onLoad: onLoad,
+    calcularTotal: calcularTotal,
+    bloquearCamposSeConfirmado: bloquearCamposSeConfirmado
+  };
+})();
