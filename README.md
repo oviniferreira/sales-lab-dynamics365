@@ -198,7 +198,7 @@ Fluxo da lógica:
 ✔️ Modelagem de dados concluída  
 ✔️ Relacionamentos configurados  
 ✔️ Model-Driven App funcional  
-✔️ Business Rules implementadas
+✔️ Business Rules implementadas  
 ✔️ JavaScript implementado (cálculo automático do pedido)
 
 
