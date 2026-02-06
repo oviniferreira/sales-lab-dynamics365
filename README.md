@@ -127,6 +127,61 @@ Quando o status do pedido é alterado para **Confirmado**:
 
 ---
 
+## 💻 JavaScript (Formulário de Pedido)
+
+Foi implementado um módulo JavaScript personalizado para melhorar a experiência do usuário
+e adicionar lógica dinâmica ao formulário de Pedido.
+
+### 🎯 Objetivos da implementação
+
+- Calcular automaticamente o **Valor Total** (Preço × Quantidade)
+- Utilizar Web API para buscar o preço do produto
+- Manipular campos dinamicamente via `formContext`
+- Garantir melhor usabilidade no preenchimento do Pedido
+
+---
+
+### ⚙️ Lógica Implementada
+
+O script é executado nos eventos:
+
+- `OnChange` do campo Produto
+- `OnChange` do campo Quantidade
+
+Fluxo da lógica:
+
+1. Quando Produto e Quantidade são preenchidos
+2. O sistema consulta o Preço do Produto via `Xrm.WebApi.retrieveRecord`
+3. O Valor Total é calculado automaticamente
+4. O campo Valor Total é atualizado no formulário
+
+---
+
+### 📷 Demonstração
+
+#### Preço configurado no Produto
+
+![Preço do Produto](images/javascript/preco-produto.png)
+
+---
+
+#### Cálculo automático no Pedido
+
+![Cálculo do Pedido](images/javascript/calculo-pedido.png)
+
+---
+
+### 🧠 Conceitos Utilizados
+
+- `formContext`
+- `getAttribute()` e `setValue()`
+- `setSubmitMode("always")`
+- `Xrm.WebApi.retrieveRecord`
+- Manipulação de Lookup
+- JavaScript modular (namespace pattern)
+
+---
+
 ## ⚙️ Tecnologias Utilizadas
 
 - Microsoft Dynamics 365
@@ -134,6 +189,7 @@ Quando o status do pedido é alterado para **Confirmado**:
 - Dataverse
 - Model-Driven App
 - Business Rules
+- JavaScript (Client-side customization)
 
 ---
 
@@ -142,10 +198,11 @@ Quando o status do pedido é alterado para **Confirmado**:
 ✔️ Modelagem de dados concluída  
 ✔️ Relacionamentos configurados  
 ✔️ Model-Driven App funcional  
-✔️ Business Rules implementadas  
+✔️ Business Rules implementadas
+✔️ JavaScript implementado (cálculo automático do pedido)
+
 
 🔄 Próximos passos:
-- Implementação de JavaScript
 - Desenvolvimento de Plugin
 - Automações com Power Automate
 - Configuração de Security Roles
