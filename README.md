@@ -247,7 +247,7 @@ Os plugins foram desenvolvidos utilizando:
 
 #### Erro ao tentar confirmar pedido com estoque insuficiente
 
-![Plugin Estoque Insuficiente](images/plugins/plugin-estoque-insuficiente.png)
+![Plugin Estoque Insuficiente](images/plugins/plugin-estoque-insuficiente-bloqueio.png)
 
 ---
 
